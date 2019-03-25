@@ -1,12 +1,15 @@
 package pl.gumi5.demosecond.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ProductResponseDto {
 
     private final String id;
     private final String name;
 
-
-    public ProductResponseDto(String id, String name) {
+    @JsonCreator
+    public ProductResponseDto(@JsonProperty("id") String id, @JsonProperty("name") String name) {
         this.id = id;
         this.name = name;
     }
