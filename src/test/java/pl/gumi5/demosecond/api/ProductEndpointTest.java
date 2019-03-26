@@ -3,16 +3,38 @@ package pl.gumi5.demosecond.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
 import pl.gumi5.demosecond.DemoSecondApplicationTests;
+import pl.gumi5.demosecond.domain.Product;
+import pl.gumi5.demosecond.domain.ProductFacade;
 import pl.gumi5.demosecond.domain.ProductRequestDto;
 import pl.gumi5.demosecond.domain.ProductResponseDto;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class ProductEndpointTest  extends DemoSecondApplicationTests {
+
+    @Autowired
+    ProductFacade productFacade;
+
+    @Test
+    public void shouldGetExistingProduct(){
+        //given
+        ProductRequestDto requestDto = new ProductRequestDto("product");
+        ProductResponseDto existingProduct = productFacade.create(requestDto);
+        final String url = "http://localhost:"+ port + "/products/" + existingProduct.getId();
+
+        //when
+        ResponseEntity<ProductResponseDto> result = httpClient.getForEntity(url, ProductResponseDto.class);
+
+        //then
+        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getBody()).isEqualToComparingFieldByField(existingProduct);
+    }
 
     @Test
     public void shouldCreateProduct(){

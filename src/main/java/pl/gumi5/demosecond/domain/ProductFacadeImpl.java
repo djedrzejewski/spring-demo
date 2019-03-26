@@ -15,6 +15,11 @@ class ProductFacadeImpl implements ProductFacade {
         this.productRepository = productRepository;
     }
 
+    @Override
+    public ProductResponseDto findById(String id){
+        Product product = productRepository.findById(id);
+        return new ProductResponseDto(product.getId(), product.getName());
+    }
 
     @Override
     public ProductResponseDto create(ProductRequestDto productRequest) {

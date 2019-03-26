@@ -1,9 +1,7 @@
 package pl.gumi5.demosecond.api;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import pl.gumi5.demosecond.domain.ProductFacade;
 import pl.gumi5.demosecond.domain.ProductRequestDto;
 import pl.gumi5.demosecond.domain.ProductResponseDto;
@@ -14,8 +12,14 @@ class ProductEndpoint {
 
     private final ProductFacade productFacade;
 
-    public ProductEndpoint(ProductFacade productFacade) {
+    @Autowired
+    ProductEndpoint(ProductFacade productFacade) {
         this.productFacade = productFacade;
+    }
+
+    @GetMapping("/{id}")
+    ProductResponseDto getProduct(@PathVariable("id") String id){
+        return productFacade.findById(id);
     }
 
     @PostMapping

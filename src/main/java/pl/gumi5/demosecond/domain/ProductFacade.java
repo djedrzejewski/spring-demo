@@ -3,7 +3,7 @@ package pl.gumi5.demosecond.domain;
 public interface ProductFacade {
     //get
 
-    ProductResponseDto get(ProductRequestDto productRequest);
+    ProductResponseDto findById(String id);
 
     //create
 
