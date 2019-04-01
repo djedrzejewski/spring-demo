@@ -33,7 +33,7 @@ class ProductEndpoint {
         return productFacade.update(id, productRequestDto);
     }
 
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     ProductResponseDto deleteProduct(@PathVariable("id") String id){
         productFacade.findById(id);
         return productFacade.delete(id);

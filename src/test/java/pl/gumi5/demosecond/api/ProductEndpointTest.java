@@ -111,7 +111,7 @@ public class ProductEndpointTest  extends DemoSecondApplicationTests {
         //then
         assertThat(result.getStatusCodeValue()).isEqualTo(404);
     }
-/*
+
     @Test
     public void shouldDeleteProduct(){
         //given
@@ -126,15 +126,7 @@ public class ProductEndpointTest  extends DemoSecondApplicationTests {
         //then
         assertThat(result.getStatusCodeValue()).isEqualTo(404);
     }
-*/
-/*
-    @Test
-    public void shouldReturn404OnDeleteNonExistingProduct(){
-        // given
-        // when
-        // then
-    }
-*/
+
     String mapToJson(ProductRequestDto product){
         try {
             return objectMapper.writeValueAsString(product);
