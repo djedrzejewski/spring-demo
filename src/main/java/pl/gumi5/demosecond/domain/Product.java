@@ -9,7 +9,7 @@ public final class Product {
     private final String name;
     private final LocalDateTime createdAt;
 
-    Product(String id, String name, LocalDateTime createdAt) {
+    public Product(String id, String name, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;

@@ -1,6 +1,7 @@
 package pl.gumi5.demosecond.infrastructure;
 
 import pl.gumi5.demosecond.domain.Product;
+import pl.gumi5.demosecond.domain.ProductRequestDto;
 
 public interface ProductRepository {
 
@@ -8,4 +9,5 @@ public interface ProductRepository {
 
     Product findById(String id);
 
+    Product update(Product productToEdit, ProductRequestDto editedProduct);
 }

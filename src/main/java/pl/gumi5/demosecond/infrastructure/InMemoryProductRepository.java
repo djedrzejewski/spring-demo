@@ -2,6 +2,7 @@ package pl.gumi5.demosecond.infrastructure;
 
 import org.springframework.stereotype.Repository;
 import pl.gumi5.demosecond.domain.Product;
+import pl.gumi5.demosecond.domain.ProductRequestDto;
 import pl.gumi5.demosecond.exceptions.ProductNotFoundException;
 
 import java.util.HashMap;
@@ -17,13 +18,30 @@ class InMemoryProductRepository implements ProductRepository {
         products.put(product.getId(), product);
     }
 
-    // returns product on success, null when not found
     @Override
     public Product findById(String id) {
         if(products.containsKey(id)){
             return products.get(id);
+        }else{
+            throw new ProductNotFoundException();
         }
-
-        throw new ProductNotFoundException();
     }
+
+    @Override
+    public Product update(Product productToEdit, ProductRequestDto editedProduct){
+
+        if(products.containsKey(productToEdit.getId())){
+            Product newProduct = new Product(
+                    productToEdit.getId(),
+                    editedProduct.getName(),
+                    productToEdit.getCreatedAt()
+            );
+
+            products.replace(productToEdit.getId(), newProduct);
+            return newProduct;
+        }else{
+            throw new ProductNotFoundException();
+        }
+    }
+
 }

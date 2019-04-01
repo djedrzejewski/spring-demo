@@ -1,20 +1,18 @@
 package pl.gumi5.demosecond.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
 import pl.gumi5.demosecond.DemoSecondApplicationTests;
-import pl.gumi5.demosecond.domain.Product;
 import pl.gumi5.demosecond.domain.ProductFacade;
 import pl.gumi5.demosecond.domain.ProductRequestDto;
 import pl.gumi5.demosecond.domain.ProductResponseDto;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductEndpointTest  extends DemoSecondApplicationTests {
 
@@ -37,7 +35,7 @@ public class ProductEndpointTest  extends DemoSecondApplicationTests {
     }
 
     @Test
-    public void shouldGet404OnNonExistingProduct(){
+    public void shouldReturn404OnGetNonExistingProduct(){
         //given
         final String url = "http://localhost:"+ port + "/products/" + "123";
 
@@ -68,6 +66,51 @@ public class ProductEndpointTest  extends DemoSecondApplicationTests {
         assertThat(result.getBody().getName()).isEqualTo("typowanazwa");
     }
 
+    @Test
+    public void shouldUpdateProduct(){
+        //given
+        final String createdProductName = "startowa-nazwa";
+        final String editedProductName = "wyedytowana-nazwa";
+
+        ProductResponseDto createdProduct = productFacade.create(new ProductRequestDto(createdProductName));
+        ProductRequestDto productToEdit = new ProductRequestDto(editedProductName);
+        final String productJson = mapToJson(productToEdit);
+
+        final String url = "http://localhost:"+ port + "/products/"+createdProduct.getId();
+
+        //when
+        ResponseEntity<ProductResponseDto> updateResult = httpClient.exchange(
+                url,
+                HttpMethod.PUT,
+                getHttpRequest(productJson),
+                ProductResponseDto.class
+        );
+
+        //then
+        assertThat(updateResult.getStatusCodeValue()).isEqualTo(200);
+        assertThat(updateResult.getBody().getId()).isEqualTo(createdProduct.getId());
+        assertThat(updateResult.getBody().getName()).isEqualTo(productToEdit.getName());
+    }
+
+    @Test
+    public void shouldReturn404OnUpdateNonExistingProduct(){
+        //given
+        final String url = "http://localhost:"+ port + "/products/" + "123";
+        ResponseEntity<ProductResponseDto> result = httpClient.getForEntity(url, ProductResponseDto.class);
+        ProductRequestDto productToEdit = new ProductRequestDto("new-product-name");
+        final String productJson = mapToJson(productToEdit);
+
+        //when
+        ResponseEntity<ProductResponseDto> updateResult = httpClient.exchange(
+                url,
+                HttpMethod.PUT,
+                getHttpRequest(productJson),
+                ProductResponseDto.class
+        );
+
+        //then
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
+    }
 
     String mapToJson(ProductRequestDto product){
         try {

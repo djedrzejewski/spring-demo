@@ -27,4 +27,10 @@ class ProductEndpoint {
         return productFacade.create(productRequestDto);
     }
 
+    @PutMapping("/{id}")
+    ProductResponseDto updateProduct(@PathVariable("id") String id, @RequestBody ProductRequestDto productRequestDto){
+        productFacade.findById(id);
+        return productFacade.update(id, productRequestDto);
+    }
+
 }
