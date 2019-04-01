@@ -23,21 +23,16 @@ class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public ProductResponseDto create(ProductRequestDto productRequest) {
-        //walidacja
+
         if(!productRequest.isValid()){
             throw new RuntimeException("Product name cannot be empty!");
         }
 
-        //tworzenie
         String id = UUID.randomUUID().toString();
         LocalDateTime createdAt = LocalDateTime.now();
         Product product = new Product(id, productRequest.getName(), createdAt);
 
-        //zapis
-
         productRepository.save(product);
-
-        ///przemapowac na resppnse i zwrocic
 
         return new ProductResponseDto(
                 product.getId(),
@@ -47,19 +42,27 @@ class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public ProductResponseDto update(String id, ProductRequestDto productRequestDto) {
-        //walidacja
         if(!productRequestDto.isValid()){
             throw new RuntimeException("Product name cannot be empty!");
         }
 
-        //edycja
         Product product = productRepository.findById(id);
         Product updated = productRepository.update(product, productRequestDto);
 
-        ///przemapowac na resppnse i zwrocic
         return new ProductResponseDto(
                 updated.getId(),
                 updated.getName()
+        );
+    }
+
+    @Override
+    public ProductResponseDto delete(String id) {
+        Product product = productRepository.findById(id);
+        productRepository.delete(product);
+
+        return new ProductResponseDto(
+                product.getId(),
+                product.getName()
         );
     }
 

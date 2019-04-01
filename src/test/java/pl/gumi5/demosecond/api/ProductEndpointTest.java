@@ -111,7 +111,30 @@ public class ProductEndpointTest  extends DemoSecondApplicationTests {
         //then
         assertThat(result.getStatusCodeValue()).isEqualTo(404);
     }
+/*
+    @Test
+    public void shouldDeleteProduct(){
+        //given
+        final String createdProductName = "nazwa";
+        ProductResponseDto createdProduct = productFacade.create(new ProductRequestDto(createdProductName));
+        final String url = "http://localhost:"+ port + "/products/"+createdProduct.getId();
 
+        // when
+        httpClient.delete(url);
+        ResponseEntity<ProductResponseDto> result = httpClient.getForEntity(url, ProductResponseDto.class);
+
+        //then
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
+    }
+*/
+/*
+    @Test
+    public void shouldReturn404OnDeleteNonExistingProduct(){
+        // given
+        // when
+        // then
+    }
+*/
     String mapToJson(ProductRequestDto product){
         try {
             return objectMapper.writeValueAsString(product);

@@ -11,7 +11,7 @@ import java.util.Map;
 @Repository
 class InMemoryProductRepository implements ProductRepository {
 
-    private  final Map<String, Product> products = new HashMap<>();
+    private final Map<String, Product> products = new HashMap<>();
 
     @Override
     public void save(Product product) {
@@ -39,6 +39,16 @@ class InMemoryProductRepository implements ProductRepository {
 
             products.replace(productToEdit.getId(), newProduct);
             return newProduct;
+        }else{
+            throw new ProductNotFoundException();
+        }
+    }
+
+    @Override
+    public Product delete(Product product) {
+        if(products.containsKey(product.getId())){
+            products.remove(product.getId());
+            return product;
         }else{
             throw new ProductNotFoundException();
         }

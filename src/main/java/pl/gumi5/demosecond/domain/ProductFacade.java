@@ -5,5 +5,5 @@ public interface ProductFacade {
     ProductResponseDto findById(String id);
     ProductResponseDto create(ProductRequestDto productRequest);
     ProductResponseDto update(String id, ProductRequestDto productRequestDto);
-    //delete
+    ProductResponseDto delete(String id);
 }
