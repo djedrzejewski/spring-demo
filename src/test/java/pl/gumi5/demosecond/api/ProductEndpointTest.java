@@ -37,6 +37,18 @@ public class ProductEndpointTest  extends DemoSecondApplicationTests {
     }
 
     @Test
+    public void shouldGet404OnNonExistingProduct(){
+        //given
+        final String url = "http://localhost:"+ port + "/products/" + "123";
+
+        //when
+        ResponseEntity<ProductResponseDto> result = httpClient.getForEntity(url, ProductResponseDto.class);
+
+        //then
+        assertThat(result.getStatusCodeValue()).isEqualTo(404);
+    }
+
+    @Test
     public void shouldCreateProduct(){
         //given
         final String url = "http://localhost:"+ port + "/products";
