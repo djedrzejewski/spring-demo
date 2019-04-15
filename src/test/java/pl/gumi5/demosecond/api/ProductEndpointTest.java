@@ -11,6 +11,9 @@ import pl.gumi5.demosecond.DemoSecondApplicationTests;
 import pl.gumi5.demosecond.domain.ProductFacade;
 import pl.gumi5.demosecond.domain.ProductRequestDto;
 import pl.gumi5.demosecond.domain.ProductResponseDto;
+import pl.gumi5.demosecond.domain.ProductsListResponseDto;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +21,22 @@ public class ProductEndpointTest  extends DemoSecondApplicationTests {
 
     @Autowired
     ProductFacade productFacade;
+
+    @Test
+    public void shouldGetListOfExistingProducts(){
+        //given
+        ProductRequestDto requestDto1 = new ProductRequestDto("product1");
+        ProductResponseDto existingProduct1 = productFacade.create(requestDto1);
+        ProductRequestDto requestDto2 = new ProductRequestDto("product2");
+        ProductResponseDto existingProduct2 = productFacade.create(requestDto2);
+        final String url = "http://localhost:"+ port + "/products";
+
+        //when
+        ResponseEntity<ProductsListResponseDto> result = httpClient.getForEntity(url, ProductsListResponseDto.class);
+
+        //then
+        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+    }
 
     @Test
     public void shouldGetExistingProduct(){

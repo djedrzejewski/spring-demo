@@ -5,6 +5,7 @@ import pl.gumi5.demosecond.domain.Product;
 import pl.gumi5.demosecond.domain.ProductRequestDto;
 import pl.gumi5.demosecond.exceptions.ProductNotFoundException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,17 @@ class InMemoryProductRepository implements ProductRepository {
     @Override
     public void save(Product product) {
         products.put(product.getId(), product);
+    }
+
+    @Override
+    public ArrayList<Product> findAll() {
+        ArrayList<Product> productsToReturn = new ArrayList<Product>();
+
+        for (String key: products.keySet()) {
+            productsToReturn.add(products.get(key));
+        }
+
+        return productsToReturn;
     }
 
     @Override

@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.gumi5.demosecond.domain.ProductFacade;
 import pl.gumi5.demosecond.domain.ProductRequestDto;
 import pl.gumi5.demosecond.domain.ProductResponseDto;
+import pl.gumi5.demosecond.domain.ProductsListResponseDto;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/products")
@@ -15,6 +18,11 @@ class ProductEndpoint {
     @Autowired
     ProductEndpoint(ProductFacade productFacade) {
         this.productFacade = productFacade;
+    }
+
+    @GetMapping()
+    public ProductsListResponseDto getProducts(){
+        return productFacade.findAll();
     }
 
     @GetMapping("/{id}")
